@@ -37,7 +37,7 @@ function  geoCurrentLoc(map) {
         latLngBounds.extend(path[i]);
         // latLngBounds.extend(flightPlanCoordinates[i]);
         // Place the marker
-        drawMarker(map, path[i]);
+        drawMarker(map, path[i],"current_location");
         // drawMarker(map, flightPlanCoordinates[i]);
         // new google.maps.Marker({
         //   map: map,
@@ -80,7 +80,7 @@ function  geoCurrentLoc(map) {
       //         )
       //       );
       //     }
-      console.log(path);
+      // console.log(path);
  
    
 
@@ -96,7 +96,7 @@ function  geoCurrentLoc(map) {
   var watchID = null;
 
   var options = {
-    enableHighAccuracy: false,
+    enableHighAccuracy: true,
     timeout: 5000,
     maximumAge: 0
   };

@@ -76,3 +76,7 @@ nav{
 	top: 15%;
 }
 
+/*bottom navigation*/
+.navTabItem{
+	cursor:pointer;
+}

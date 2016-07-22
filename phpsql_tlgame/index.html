@@ -9,8 +9,18 @@
     <link href = "css/style.css" rel = "stylesheet" type = "text/css">
     <link href='https://fonts.googleapis.com/css?family=Ubuntu+Condensed' rel='stylesheet' type='text/css'>
 
+    <!--  <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKLsVCt_3B0dMuzXH1tyZs8tjUIDsJC68&callback=initMap">
+    </script> -->
+
     <script src = "js/jquery-1.11.0.min.js"></script>
     <script src = "js/bootstrap.min.js"></script>
+
+   <!--  <script type="text/javascript"
+        src="http://maps.google.com/maps/api/js?sensor=false"></script> -->
+
+<!-- <script type="text/javascript" src="https://maps.google.com/maps/api/js?v=3"></script> -->
+        
 
 
   </head>
@@ -52,11 +62,11 @@
                 </div>
                 <div class="form-group">
                   <!-- <label for="recipient-name" class="form-control-label">Email : </label> -->
-                  <input type="text" class="form-control" placeholder = "Email" id="playerEmail" name = "playerEmail">
+                  <input type="email" class="form-control" placeholder = "Email" id="playerEmail" name = "playerEmail" required>
                 </div>
                 <div class="form-group">
                   <!-- <label for="message-text" class="form-control-label">Password :</label> -->
-                  <input type="text" class="form-control" placeholder = "Password" id="playerPsrd" name = "playerPsrd">
+                  <input type="password" class="form-control" placeholder = "Password" id="playerPsrd" name = "playerPsrd" required>
                 </div>
                 <button class="btn btn-primary" type="submit">Start</button>
               </form>
@@ -75,7 +85,7 @@
       
 
       <div class = "row text-center navTab">
-        <div class = "col-xs-3 navTabItem">
+        <div class = "col-xs-3 navTabItem" id = "currentLoc">
           <i class = "glyphicon glyphicon-map-marker"></i>    
         </div>
 
@@ -112,11 +122,24 @@
         </div>
       </div>
     </div>
-
+ <script src = "js/geoCurrentLoc.js"></script>
+    <script src = "js/drawMarker.js"></script>
+    <script src = "js/drawRoute.js"></script>
     <script>
+  //    $.getJSON('shapes.json', function (data) {
+  //   console.log(data[0]);
+  // });
+ // initMap();
+
     $(document).ready(function(){
 
-    $("#newPlayerForm").submit( function() {
+   
+   
+
+});
+
+   
+$("#newPlayerForm").submit( function() {
 
         $.ajax({
             url     : $(this).attr('action'),
@@ -125,6 +148,7 @@
             success : function() {
                          $("#newPlayerForm")[0].reset();
                          // $("#modal_success").modal();
+                         $("#checkInModal").modal('hide');
                          
                          // alert('Form is successfully submitted');       
                       },
@@ -134,13 +158,9 @@
                       }
         });
 
+         
         return false;
     });
-
-});
-
-   
-
     $('#checkIn').click(function(){
       $('#checkInModal').modal('show');
     });
@@ -149,29 +169,60 @@
 
         var mapDiv = document.getElementById('map');
         var map = new google.maps.Map(mapDiv, {
-            center: {lat: 49.246292, lng: -123.116226},
+            center: {lat: 49.257645, lng: -123.172280},
             zoom: 16,
             mapTypeId : google.maps.MapTypeId.ROADMAP
+
+            // center: {lat: 41.850033, lng: -87.6500523},
+            // zoom: 11
         });
         
         // get current location and draw a marker(a circle) on that location
         //when mobile device moves, draw a polyline on the route, and a marker(a circle) on each changed locations
         geoCurrentLoc(map);
+        drawRoute(map,191080);
+
+        // click the first tab on the bottom to retrieve current location again
+        $('#currentLoc').click(function(){
+            geoCurrentLoc(map);
+         });
+        // drawPoints(map,191080);
 
 
         // watchLoc(map);
+        // var queryList = [];
+        // var tableid = '1cabcguUlVSXVHBaxczgUT7dWVvTg6r6ICmebisxG';
+        // queryList.push("SELECT shape_pt_lat,shape_pt_lon FROM ");
+        // queryList.push(tableid);
+    //      layer = new google.maps.FusionTablesLayer({
+    //         map: map,
+    //         heatmap: { enabled: false },
+    //         query: {
+    //           // col1 is column name of shape_pt_lat,after changing it into location type data in fusion table, the name of the column changed
+    //           select: "col1",
+    //           from: "1cabcguUlVSXVHBaxczgUT7dWVvTg6r6ICmebisxG",
+    //           where: "shape_id = 189960"
+    //         },
+    //         options: {
+    //           styleId: 2,
+    //           templateId: 3
+    //         }
+    // });
+
+
+    // var datasample = map.data.loadGeoJson('shapes.json');
+    
+         // console.log(layer)
 
       }
 
-     
     </script>
     <!-- use google map kpi -->
-    <script async defer
+   
+   <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKLsVCt_3B0dMuzXH1tyZs8tjUIDsJC68&callback=initMap">
     </script>
-    <script src = "js/geoCurrentLoc.js"></script>
-    <script src = "js/drawMarker.js"></script>
-    <script src = "js/watchLoc.js"></script>
+    
 
   </body>
 </html>
