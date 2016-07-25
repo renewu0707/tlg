@@ -6,7 +6,7 @@
       // the array to store all points along the route as object
          var route = [];
 
-    	$.getJSON('shapes.json', function (data) {
+    	$.getJSON('translinkApi/shapes.json', function (data) {
     	   
     	   // the array to store all points along the route as map LatLng object
     	   var routePath = [];
@@ -32,12 +32,12 @@
            for(var j = 0; j < route.length; j++){
              routePath.push(new google.maps.LatLng(route[j]['shape_pt_lat'], route[j]['shape_pt_lon']));
 
-             if(route[j]['shape_pt_sequence']%50 === 1){
-                segmentPos.lat = route[j]['shape_pt_lat'];
-                segmentPos.lng = route[j]['shape_pt_lon'];
-                // console.log(position)
-                drawMarker(map,segmentPos,"flag_point5");
-            }
+            //  if(route[j]['shape_pt_sequence']%50 === 1){
+            //     segmentPos.lat = route[j]['shape_pt_lat'];
+            //     segmentPos.lng = route[j]['shape_pt_lon'];
+            //     // console.log(position)
+            //     drawMarker(map,segmentPos,"flag_point5");
+            // }
            }
 
            // console.log(routePath)

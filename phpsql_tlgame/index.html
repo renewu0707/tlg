@@ -16,6 +16,8 @@
     <script src = "js/jquery-1.11.0.min.js"></script>
     <script src = "js/bootstrap.min.js"></script>
 
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+
    <!--  <script type="text/javascript"
         src="http://maps.google.com/maps/api/js?sensor=false"></script> -->
 
@@ -125,6 +127,7 @@
  <script src = "js/geoCurrentLoc.js"></script>
     <script src = "js/drawMarker.js"></script>
     <script src = "js/drawRoute.js"></script>
+    <script src = "js/drawStops.js"></script>
     <script>
   //    $.getJSON('shapes.json', function (data) {
   //   console.log(data[0]);
@@ -179,8 +182,11 @@ $("#newPlayerForm").submit( function() {
         
         // get current location and draw a marker(a circle) on that location
         //when mobile device moves, draw a polyline on the route, and a marker(a circle) on each changed locations
-        geoCurrentLoc(map);
+        // geoCurrentLoc(map);
+        // use shape_id in shapes.json to draw a route
         drawRoute(map,191080);
+        // use the trip_id on the shape to mark stops, but a shape contains several trips
+        drawStops(map, 8020986);
 
         // click the first tab on the bottom to retrieve current location again
         $('#currentLoc').click(function(){
