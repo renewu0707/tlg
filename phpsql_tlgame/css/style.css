@@ -55,6 +55,16 @@ nav{
 	left:-100% !important;
 }
 
+.leftReturn{
+	position: fixed;
+	z-index: 100;
+	top: 12px;
+	left: 2%;
+	font-size: 18px;
+	color: grey;
+}
+
+/*the four tabs at the bottom*/
 .navTab{
 	background-color: whitesmoke;
 	border-top: 1px solid grey;
@@ -71,12 +81,23 @@ nav{
 	padding-top: 10px;
 }
 
+.navTabItem{
+	cursor:pointer;
+}
+
 /*change check in modal position*/
 #checkInModal{
 	top: 15%;
 }
 
-/*bottom navigation*/
-.navTabItem{
-	cursor:pointer;
+#routeCardList{
+	/*margin-top: 60px;*/
 }
+#routeCardList li{
+	margin-top: 10px;
+}
+#routeCardList li > p{
+	margin: 0;
+}
+
+

@@ -1,9 +1,19 @@
 
-function drawStops(map,tripID){
+function drawStops(map,routeID){
+  // here the routeID i am using shape_id to represent each route
+  $.getJSON('translinkApi/trips.json',function(data){
+   var trip = [];
+   for(var i = 0; i < data.length; i++){
+       if(data[i]['shape_id'] === routeID){
+        trip.push(data[i]);
+       }
+   }
+  
 	var route = [];
 	d3.csv("translinkApi/stop_times.csv", function(data) {
+
 	  for(var i = 0; i < data.length; i++){
-	  	if(data[i]['trip_id'] == tripID){
+	  	if(data[i]['trip_id'] == trip[0]['trip_id']){
 	  		route.push(data[i]);
 	  	}
 	  }
@@ -33,18 +43,11 @@ function drawStops(map,tripID){
     		
     	}
 
-    	// Creates the polyline object
-	      // var polyline = new google.maps.Polyline({
-	      //   map: map,
-	      //   path: routePath,
-	      //   strokeColor: '#0000FF',
-	      //   strokeOpacity: 0.7,
-	      //   strokeWeight: 3
-	      // });
-// console.log(route2)
     });
 
     });
+
+ });
 }
 
 

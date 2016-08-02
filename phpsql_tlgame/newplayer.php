@@ -47,11 +47,11 @@ else{
 //the table name and column names have to exist before execute the following query
 $sql = "INSERT INTO playerlist (playerName, playerEmail, playerPsrd) VALUES ('$name_s', '$email_s', '$psrd_s')";
 if ($conn->query($sql) === TRUE) {
-	echo "<script type='text/javascript'>alert('submitted successfully!')</script>";
-    // echo "New record created successfully";
+	// echo "<script type='text/javascript'>alert('submitted successfully!')</script>";
+    echo "New record created successfully";
 } else {
-    // echo "Error: " . $sql . "<br>" . $conn->error;
-    echo "<script type='text/javascript'>alert('failed!')</script>";
+    echo "Error: " . $sql . "<br>" . $conn->error;
+    // echo "<script type='text/javascript'>alert('failed!')</script>";
 }
 }
 

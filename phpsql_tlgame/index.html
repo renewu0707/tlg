@@ -38,7 +38,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Actions<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                       <li id = "checkIn"><a href="#">Check In</a></li>
-                      <li><a href="#">Action2</a></li>
+                      <li id = "getRoute"><a href="#">Get a Route</a></li>
                       <li id = "stopTracking"><a href="#">Stop tracking me</a></li>
                       <li role="separator" class="divider"></li>
                       <li><a href="#">Checkout</a></li>
@@ -81,6 +81,23 @@
         </div>
       </div>
 
+      <!-- routeCard modal -->
+      <div class="modal fade" id="routeCardModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 class="modal-title" id="modalLabel">Route Card</h4>
+            </div>
+            <div class="modal-body">
+              <ul class="list-group" id = "routeCardList"></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class = "row">
         <div id = "map" class = "col-xs-12"></div>
       </div>
@@ -95,7 +112,7 @@
           <i class = "glyphicon glyphicon-camera"></i>
         </div>
 
-        <div class = "col-xs-3 navTabItem">
+        <div class = "col-xs-3 navTabItem" id = "getRouteCard">
           <i class = "glyphicon glyphicon-tags"></i>
         </div>
 
@@ -124,51 +141,15 @@
         </div>
       </div>
     </div>
- <script src = "js/geoCurrentLoc.js"></script>
+ <!-- <script src = "js/initMap.js"></script> -->
+    <script src = "js/geoCurrentLoc.js"></script>
     <script src = "js/drawMarker.js"></script>
     <script src = "js/drawRoute.js"></script>
     <script src = "js/drawStops.js"></script>
-    <script>
-  //    $.getJSON('shapes.json', function (data) {
-  //   console.log(data[0]);
-  // });
- // initMap();
+    <script src = "js/generateRouteCard.js"></script>
 
-    $(document).ready(function(){
-
-   
-   
-
-});
-
-   
-$("#newPlayerForm").submit( function() {
-
-        $.ajax({
-            url     : $(this).attr('action'),
-            type    : $(this).attr('method'),
-            data    : $(this).serialize(),
-            success : function() {
-                         $("#newPlayerForm")[0].reset();
-                         // $("#modal_success").modal();
-                         $("#checkInModal").modal('hide');
-                         
-                         // alert('Form is successfully submitted');       
-                      },
-            error   : function(){
-                         // $("#modal_fail")[0].modal();
-                         // alert('Something wrong');
-                      }
-        });
-
-         
-        return false;
-    });
-    $('#checkIn').click(function(){
-      $('#checkInModal').modal('show');
-    });
-
-    function initMap() {
+<script>
+function initMap() {
 
         var mapDiv = document.getElementById('map');
         var map = new google.maps.Map(mapDiv, {
@@ -182,16 +163,24 @@ $("#newPlayerForm").submit( function() {
         
         // get current location and draw a marker(a circle) on that location
         //when mobile device moves, draw a polyline on the route, and a marker(a circle) on each changed locations
-        // geoCurrentLoc(map);
+        geoCurrentLoc(map);
         // use shape_id in shapes.json to draw a route
-        drawRoute(map,191080);
+
+        // drawRoute(map,selectedRouteID);
+        // drawRoute(map,191080);
         // use the trip_id on the shape to mark stops, but a shape contains several trips
-        drawStops(map, 8020986);
+        // drawStops(map, 8091598);
+        // drawStops(map, 8020986);
 
         // click the first tab on the bottom to retrieve current location again
         $('#currentLoc').click(function(){
             geoCurrentLoc(map);
          });
+
+        // $('#getRouteCard').click(function(){
+        //   generateRouteCard();
+
+        // });
         // drawPoints(map,191080);
 
 
@@ -219,16 +208,79 @@ $("#newPlayerForm").submit( function() {
     // var datasample = map.data.loadGeoJson('shapes.json');
     
          // console.log(layer)
+    $("#getRoute").click(function(){
 
-      }
+        $('#routeCardModal').modal('show');
 
-    </script>
+        $.ajax({                                      
+          url: 'getRouteCard.php', 
+          type: 'get',              
+          dataType: 'json',                    
+          success: function(data){          
+            for(var i = 0; i < data.length; i++){
+
+              var route_id = data[i]['route_id'];    
+              var route_start_lat = data[i]['route_start_lat'];          
+              var route_start_lon = data[i]['route_start_lon'];          
+              var route_end_lat = data[i]['route_end_lat'];          
+              var route_end_lon = data[i]['route_end_lon']; 
+
+              var routeListItem =  document.createElement('li');
+              routeListItem.className = "list-group-item";
+              routeListItem.id = route_id;
+              routeListItem.innerHTML = "Route : " + route_id + "</br>" + "Start From : " + route_start_lat + "," + route_start_lon + "</br>" + "End At : " + route_end_lat + "," + route_end_lon;
+             
+              $('#routeCardList').append(routeListItem);
+              
+              // this click event has to be after the append to parent element
+              // add a click event on each route card to draw that route on the map
+              $('#' + routeListItem.id).click(function(){
+                 var routeID = parseInt(this.id);
+                 $('#routeCardModal').modal('hide');
+                 drawRoute(map,routeID);
+                 drawStops(map,routeID);
+              });
+            }
+          } 
+        });
+  }); 
+}
+   
+$("#newPlayerForm").submit( function() {
+
+        $.ajax({
+            url     : $(this).attr('action'),
+            type    : $(this).attr('method'),
+            data    : $(this).serialize(),
+            success : function() {
+                         $("#newPlayerForm")[0].reset();
+                         // $("#modal_success").modal();
+                         $("#checkInModal").modal('hide');
+                         
+                         // alert('Form is successfully submitted');       
+                      },
+            error   : function(){
+                         // $("#modal_fail")[0].modal();
+                         // alert('Something wrong');
+                      }
+        });
+
+         
+        return false;
+    });
+
+    $('#checkIn').click(function(){
+      $('#checkInModal').modal('show');
+    });
+
+
+
+</script>
     <!-- use google map kpi -->
    
-   <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKLsVCt_3B0dMuzXH1tyZs8tjUIDsJC68&callback=initMap">
-    </script>
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKLsVCt_3B0dMuzXH1tyZs8tjUIDsJC68&callback=initMap">
+</script>
     
-
   </body>
 </html>

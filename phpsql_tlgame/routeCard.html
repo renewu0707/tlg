@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset = "UTF-8" />
+    <meta name = "viewport" content = "width = device-width, initial-scale = 1.0"> 
+    <title>Translink Game</title>
+
+    <link href = "css/bootstrap.min.css" rel = "stylesheet">
+    <link href = "css/style.css" rel = "stylesheet" type = "text/css">
+    <link href='https://fonts.googleapis.com/css?family=Ubuntu+Condensed' rel='stylesheet' type='text/css'>
+
+    <script src = "js/jquery-1.11.0.min.js"></script>
+    <script src = "js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class = "container-fluid">
+      <nav>   
+          <p class = "actionTitle">Get a Route</p>
+          <a class = "leftReturn" href="index.html" ><span class = "glyphicon glyphicon-chevron-left"></span></a>
+      </nav>
+
+      <ul class="list-group" id = "routeCardList">
+         <!--  <li class="list-group-item">
+            <p>Route 189960</p>
+            <p>Start from : 49.4435, -123.9876</p>
+            <p>End at : 49.4435, -123.9876</p>
+          </li> -->
+      </ul>
+
+    </div>
+ <!-- <script src = "js/initMap.js"></script> -->
+  <script src = "js/generateRouteCard.js"></script>
+  <script src = "js/drawRoute.js"></script>
+
+  <script>
+
+  generateRouteCard();
+  // console.log(selectedRouteID)
+
+//   var selectedRouteID;
+
+//   $(function (){
+//     $.ajax({                                      
+//       url: 'getRouteCard.php', 
+//       type: 'get',              
+//       dataType: 'json',                    
+//       success: function(data){          
+//         for(var i = 0; i < data.length; i++){
+
+//           var route_id = data[i]['route_id'];    
+//           var route_start_lat = data[i]['route_start_lat'];          
+//           var route_start_lon = data[i]['route_start_lon'];          
+//           var route_end_lat = data[i]['route_end_lat'];          
+//           var route_end_lon = data[i]['route_end_lon']; 
+
+//           var routeListItem =  document.createElement('li');
+//           routeListItem.className = "list-group-item";
+//           routeListItem.id = route_id;
+//           routeListItem.innerHTML = "Route : " + route_id + "</br>" + "Start From : " + route_start_lat + "," + route_start_lon + "</br>" + "End At : " + route_end_lat + "," + route_end_lon;
+         
+//           $('#routeCardList').append(routeListItem);
+          
+//           // this click event has to be after the append to parent element
+//           $('#' + routeListItem.id).click(function(){
+//              selectedRouteID = this.id;
+//              console.log(selectedRouteID)
+//           });
+
+//         }
+
+//         // initMap(selectedRouteID);
+//       } 
+
+
+//     });
+// // console.log(selectedRouteID);
+//   }); 
+
+            
+
+  </script>
+
+ 
+</body>
+
+</html>
